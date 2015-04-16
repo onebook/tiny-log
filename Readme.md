@@ -10,19 +10,29 @@ a tiny logger for node.js, base on [logfilestream](https://github.com/node-modul
 ### example
 
 ```js
-var tinyLog = require('tiny-log'),
-  logger = tinyLog({
-    std: true,
-    name: 'example',
-    dir: __dirname,
-    duration: 60000,
-    levels: ['log', 'info', 'error']
-  });
+const tinyLog = require('tiny-log');
+const logger = tinyLog({
+  std: true,
+  name: 'example',
+  dir: __dirname,
+  duration: 60000,
+  levels: ['log', 'info', 'error']
+});
 
 logger.log('example');
 logger.info('hello world');
 logger.error(new Error('example'));
 ```
+
+#### options
+
+* dir - log file dir
+* name - log file name prefix, default `''`
+* std - output to std ? default `false`
+* file - output to file ? default `true`
+* boundary - log boundary, default `os.EOL`
+* levels - log levels, default `['info', 'error']`
+* duration - log file duration, default `86400000`, one day
 
 ### License
 MIT

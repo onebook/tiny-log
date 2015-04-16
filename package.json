@@ -1,12 +1,12 @@
 {
   "name": "tiny-log",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "a tiny logger",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha --harmony -R spec -t 2000 test/*.js",
-    "test-cov": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -R dot -t 2000 test/*.js",
-    "test-travis": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha --report lcovonly -- -R dot -t 2000 test/*.js"
+    "test": "mocha -R spec -t 2000 test/*.js",
+    "test-cov": "istanbul cover node_modules/.bin/_mocha -- -R dot -t 2000 test/*.js",
+    "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly -- -R dot -t 2000 test/*.js"
   },
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
     "logfilestream": "^1.0.1"
   },
   "devDependencies": {
-    "istanbul": "*",
+    "istanbul-harmony": "*",
     "mocha": "*"
   }
 }

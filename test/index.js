@@ -1,20 +1,19 @@
 'use strict';
 
-var assert = require('assert'),
+const resolve = require('path').resolve,
+  assert = require('assert'),
   tinyLog = require('..'),
-  path = require('path'),
-  resolve = path.resolve,
   fs = require('fs');
 
 describe('# tiny-log', function() {
   it('add log', function(done) {
-    var logger = tinyLog({
+    let logger = tinyLog({
       std: true,
-      name: 'test',
-      format: '[test.log]',
-      dir: __dirname,
       buffer: 10,
+      name: 'test',
+      dir: __dirname,
       duration: 60000,
+      nameFormat: '[test.log]',
       levels: ['log', 'info', 'error']
     });
 
@@ -31,9 +30,9 @@ describe('# tiny-log', function() {
   });
 
   it('check log', function() {
-    assert(fs.readFileSync(resolve(__dirname, 'test-log-test.log'), 'utf8').contains('test'));
-    assert(fs.readFileSync(resolve(__dirname, 'test-info-test.log'), 'utf8').contains('hello world'));
-    assert(fs.readFileSync(resolve(__dirname, 'test-error-test.log'), 'utf8').contains('message: test'));
+    assert(fs.readFileSync(resolve(__dirname, 'test-log-test.log'), 'utf8').includes('test'));
+    assert(fs.readFileSync(resolve(__dirname, 'test-info-test.log'), 'utf8').includes('hello world'));
+    assert(fs.readFileSync(resolve(__dirname, 'test-error-test.log'), 'utf8').includes('message: test'));
   });
 
   it('clean', function() {

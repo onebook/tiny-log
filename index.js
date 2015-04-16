@@ -1,11 +1,11 @@
 'use strict';
 
-var logstream = require('logfilestream'),
+const logstream = require('logfilestream'),
   assert = require('assert'),
   util = require('util'),
   os = require('os');
 
-var EOL = os.EOL;
+const EOL = os.EOL;
 
 module.exports = Logger;
 
@@ -15,35 +15,39 @@ function Logger(options) {
   assert(options, 'options required');
   assert(options.dir, 'dir required');
 
-  var logdir = options.dir,
+  let logdir = options.dir,
     name = options.name || '',
     std = options.std || false,
     file = options.file || true,
     buffer = options.buffer || 1000,
+    boundary = options.boundary || EOL,
     duration = options.duration || 86400000, // 1 day
     levels = options.levels || ['info', 'error'],
-    format = options.format || '{pid}-YYYY-MM-DD[.log]';
+    nameFormat = options.nameFormat || '{pid}-YYYY-MM-DD[.log]';
 
-  var self = this;
+  let self = this;
 
   levels.forEach(function(level) {
-    var log = logstream({
+    let log = logstream({
       logdir: logdir,
       buffer: buffer,
       duration: duration,
-      nameformat: '[' + name + ']-[' + level + ']-' + format
+      nameformat: `[${name}]-[${level}]-${nameFormat}`
     });
 
     self[level] = function(message) {
       if (file) {
+        log.write(boundary);
         log.write(now() + EOL);
         log.write(formate.apply(null, arguments));
       }
       if (std) {
         if (message instanceof Error) {
+          console.error(boundary);
           console.error(now() + EOL);
           console.error(inspect.apply(null, arguments));
         } else {
+          console.log(boundary);
           console.log(now() + EOL);
           console.log(inspect(message));
         }
@@ -53,7 +57,7 @@ function Logger(options) {
 }
 
 function errorInfo(error) {
-  var info = {
+  let info = {
     name: error.name || '',
     code: error.code || '',
     status: error.status || '',
@@ -93,13 +97,8 @@ function formate(message) {
   }
 
   if (message instanceof Error) {
-    var info = errorInfo(message);
-    var template = 'Error: ' + EOL +
-      'name: %s' + EOL +
-      'code: %s' + EOL +
-      'status: %s' + EOL +
-      'message: %s' + EOL +
-      'stack: %s' + EOL;
+    let info = errorInfo(message);
+    let template = ['Error: ', 'name: %s', 'code: %s', 'status: %s', 'message: %s', 'stack: %s'].join(EOL) + EOL;
     return util.format(template, info.name, info.code, info.status, info.message, info.stack) + EOL;
   }
 
