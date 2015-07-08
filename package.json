@@ -1,6 +1,6 @@
 {
   "name": "tiny-log",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "a tiny logger",
   "main": "index.js",
   "scripts": {
@@ -8,10 +8,7 @@
     "test-cov": "istanbul cover node_modules/.bin/_mocha -- -R dot -t 2000 test/*.js",
     "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly -- -R dot -t 2000 test/*.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/onebook/tiny-log.git"
-  },
+  "repository": "onebook/tiny-log",
   "keywords": [
     "logger",
     "tiny",
@@ -22,10 +19,6 @@
   ],
   "author": "haoxin",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/onebook/tiny-log/issues"
-  },
-  "homepage": "https://github.com/onebook/tiny-log",
   "dependencies": {
     "logfilestream": "^1.0.1"
   },
