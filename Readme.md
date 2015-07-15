@@ -30,6 +30,7 @@ logger.error(new Error('example'));
 * name - log file name prefix, default `''`
 * std - output to std ? default `false`
 * file - output to file ? default `true`
+* trace - trace stack, default `false`
 * boundary - log boundary, default `os.EOL`
 * levels - log levels, default `['info', 'error']`
 * duration - log file duration, default `86400000`, one day

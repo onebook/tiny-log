@@ -16,6 +16,7 @@ function Logger(options) {
   assert(options.dir, 'dir required')
 
   let logdir = options.dir
+  let trace = options.trace
   let name = options.name || ''
   let std = options.std || false
   let file = options.file || true
@@ -40,35 +41,23 @@ function Logger(options) {
 
       if (file) {
         log.write(boundary)
-        log.write(now() + EOL)
+        log.write(metaInfo(trace))
         log.write(formate.apply(null, args))
       }
 
       if (std) {
         if (message instanceof Error) {
           console.error(boundary)
-          console.error(now() + EOL)
-          console.log(inspect(message))
+          console.error(metaInfo())
+          console.error(inspect(message))
         } else {
           console.log(boundary)
-          console.log(now() + EOL)
-          console.error(inspect.apply(null, args))
+          console.log(metaInfo(trace))
+          console.log(inspect.apply(null, args))
         }
       }
     }
   })
-}
-
-function errorInfo(error) {
-  let info = {
-    name: error.name || '',
-    code: error.code || '',
-    status: error.status || '',
-    message: error.message || '',
-    stack: error.stack || ''
-  }
-
-  return info
 }
 
 function inspect(message) {
@@ -83,7 +72,7 @@ function inspect(message) {
   }
 
   if (message instanceof Error) {
-    message = errorInfo(message)
+    return errorInfo(message)
   }
 
   if (typeof message === 'object') {
@@ -105,12 +94,42 @@ function formate(message) {
   }
 
   if (message instanceof Error) {
-    let info = errorInfo(message)
-    let template = ['Error: ', 'name: %s', 'code: %s', 'status: %s', 'message: %s', 'stack: %s'].join(EOL) + EOL
-    return util.format(template, info.name, info.code, info.status, info.message, info.stack) + EOL
+    return errorInfo(message)
   }
 
   return JSON.stringify(message) + EOL
+}
+
+function errorInfo(error) {
+  let info = {
+    name: error.name || '',
+    code: error.code || '',
+    status: error.status || '',
+    message: error.message || '',
+    stack: error.stack || ''
+  }
+
+  let template = ['Error:', '  name: %s', '  code: %s', '  status: %s', '  message: %s', '  stack: %s'].join(EOL) + EOL
+
+  return util.format(template, info.name, info.code, info.status, info.message, info.stack) + EOL
+}
+
+function metaInfo(trace) {
+  let stack = ''
+
+  if (trace) {
+    try {
+      stack = ' - ' + getStack()
+    } catch (e) {}
+  }
+
+  return now() + stack + EOL
+}
+
+function getStack() {
+  let obj = {}
+  Error.captureStackTrace(obj, getStack)
+  return obj.stack.split('\n')[1].trim().match(/\((.*)\)/)[1]
 }
 
 function now() {

@@ -11,6 +11,7 @@ describe('# tiny-log', function() {
       std: true,
       buffer: 10,
       name: 'test',
+      trace: true,
       dir: __dirname,
       duration: 60000,
       nameFormat: '[test.log]',

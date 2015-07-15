@@ -3,6 +3,7 @@
 const tinyLog = require('..')
 const logger = tinyLog({
   std: true,
+  trace: true,
   name: 'example',
   dir: __dirname,
   duration: 60000, // logfilestream: duration >= one minute
